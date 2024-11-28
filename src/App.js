@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import NavbarComponent from "./components/NavbarComponent";
+import Home from "./pages/Home";
+import Sukses from "./pages/Sukses";
+import Profil from "./pages/Profil";
+import About from "./pages/About";
+import Welcome from "./pages/Welcome";
 
-function App() {
+const App = () => {
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+      {/* Tampilkan Navbar hanya jika bukan di halaman Welcome (root path "/") */}
+      {location.pathname !== "/" && <NavbarComponent />}
 
-export default App;
+      <main>
+        <Routes>
+          <Route path="/" element={<Welcome />} /> {/* Welcome sebagai halaman utama di root */}
+          <Route path="/home" element={<Home />} /> {/* Home pada path /home */}
+          <Route path="/sukses" element={<Sukses />} />
+          <Route path="/profil" element={<Profil />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+    </>
+  );
+};
+
+// Bungkus App dengan BrowserRouter di AppWrapper agar useLocation dapat digunakan
+const AppWrapper = () => {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+};
+
+export default AppWrapper;
